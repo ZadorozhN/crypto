@@ -22,7 +22,7 @@ public class IterativeCode {
         int[][] matrix = new int[numberOfRows + 1][numberOfColumns + 1];
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
-                if (message[i * numberOfRows + j] == 1) {
+                if (message[i * numberOfColumns + j] == 1) {
                     matrix[i][j] = 1;
                     matrix[i][numberOfColumns] = (matrix[i][numberOfColumns] + 1) % 2;
                     matrix[numberOfRows][j] = (matrix[numberOfRows][j] + 1) % 2;
@@ -82,7 +82,7 @@ public class IterativeCode {
         int[] message = new int[matrix.length * matrix[0].length];
 
         for (int i = 0; i < numberOfRows; i++) {
-            if (numberOfColumns >= 0) System.arraycopy(matrix[i], 0, message, i * numberOfRows, numberOfColumns);
+            if (numberOfColumns >= 0) System.arraycopy(matrix[i], 0, message, i * numberOfColumns, numberOfColumns);
         }
 
         int[] redundantBytes = getRedundantBytesFromMatrix(matrix, numberOfRows, numberOfColumns);
@@ -103,7 +103,7 @@ public class IterativeCode {
 
         for (int i = 0; i < numberOfRows; i++) {
             if (numberOfColumns >= 0) System.arraycopy(messageWithRedundantBytes,
-                    i * numberOfRows, matrix[i], 0, numberOfColumns);
+                    i * numberOfColumns, matrix[i], 0, numberOfColumns);
         }
 
         for (int i = 0; i < numberOfRows; i++) {
@@ -235,7 +235,7 @@ public class IterativeCode {
         for (int i = 0; i < numberOfRows; i++) {
             for (int j = 0; j < numberOfColumns; j++) {
                 if (syndrome[i] == 1 && syndrome[numberOfRows + j] == 1) {
-                    recoveryBytes[i * numberOfRows + j] = 1;
+                    recoveryBytes[i * numberOfColumns + j] = 1;
                 }
             }
         }
@@ -249,7 +249,7 @@ public class IterativeCode {
      * @since 1.0
      */
     public int[] recoverMessage(int[] message, int[] recoveryBytes) {
-        int[] recoveredMessage = new int[message.length];
+        int[] recoveredMessage = new int[recoveryBytes.length];
 
         for (int i = 0; i < recoveryBytes.length && i < message.length; i++) {
             recoveredMessage[i] = message[i] ^ recoveryBytes[i];

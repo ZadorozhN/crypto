@@ -15,6 +15,8 @@ import crypto.util.PrintUtil;
 
 import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -56,13 +58,20 @@ public class Blueprint {
         // sending and receiving;
 
         int[] receivedEncodedWord = encodedWord.clone();
+        List<Integer> bytesWithMistakes = new ArrayList<>();
 
         for (int i = 0; i < numberOfMistakes; i++) {
             int randomPosition = Math.abs(random.nextInt()) % receivedEncodedWord.length;
-            if (receivedEncodedWord[randomPosition] == 0) {
-                receivedEncodedWord[randomPosition] = 1;
+            if (!bytesWithMistakes.contains(randomPosition)) {
+                if (receivedEncodedWord[randomPosition] == 0) {
+                    receivedEncodedWord[randomPosition] = 1;
+                } else {
+                    receivedEncodedWord[randomPosition] = 0;
+                }
+                printUtil.print("mistake in ").println(randomPosition);
+                bytesWithMistakes.add(randomPosition);
             } else {
-                receivedEncodedWord[randomPosition] = 0;
+                i--;
             }
         }
 
@@ -93,6 +102,10 @@ public class Blueprint {
                 .printArray(calculatedRedundantBytes).println()
                 .println("the syndrome is")
                 .printArray(syndrome).println()
+                .println("the sent word is")
+                .printArray(encodedWord).println()
+                .println("the received word is")
+                .printArray(receivedEncodedWord).println()
                 .println("the recovery bytes are")
                 .printArray(recoveryBytes).println()
                 .println("the recovered message is")
@@ -122,13 +135,20 @@ public class Blueprint {
         // sending and receiving;
 
         int[] receivedEncodedWord = encodedWord.clone();
+        List<Integer> bytesWithMistakes = new ArrayList<>();
 
         for (int i = 0; i < numberOfMistakes; i++) {
             int randomPosition = Math.abs(random.nextInt()) % receivedEncodedWord.length;
-            if (receivedEncodedWord[randomPosition] == 0) {
-                receivedEncodedWord[randomPosition] = 1;
+            if (!bytesWithMistakes.contains(randomPosition)) {
+                if (receivedEncodedWord[randomPosition] == 0) {
+                    receivedEncodedWord[randomPosition] = 1;
+                } else {
+                    receivedEncodedWord[randomPosition] = 0;
+                }
+                printUtil.print("mistake in ").println(randomPosition);
+                bytesWithMistakes.add(randomPosition);
             } else {
-                receivedEncodedWord[randomPosition] = 0;
+                i--;
             }
         }
 
@@ -162,6 +182,10 @@ public class Blueprint {
                 .printArray(calculatedRedundantBytes).println()
                 .println("the syndrome is")
                 .printArray(syndrome).println()
+                .println("the sent word is")
+                .printArray(encodedWord).println()
+                .println("the received word is")
+                .printArray(receivedEncodedWord).println()
                 .println("the recovery bytes are")
                 .printArray(recoveryBytes).println()
                 .println("the recovered message is")
@@ -183,13 +207,20 @@ public class Blueprint {
         //sending and receiving
 
         int[] receivedEncodedMessage = encodedMessage.clone();
+        List<Integer> bytesWithMistakes = new ArrayList<>();
 
         for (int i = 0; i < numberOfMistakes; i++) {
-            int randomPosition = Math.abs(random.nextInt()) % numberOfRows * numberOfColumns;
-            if (receivedEncodedMessage[randomPosition] == 0) {
-                receivedEncodedMessage[randomPosition] = 1;
+            int randomPosition = Math.abs(random.nextInt()) % (numberOfRows * numberOfColumns);
+            if (!bytesWithMistakes.contains(randomPosition)) {
+                if (receivedEncodedMessage[randomPosition] == 0) {
+                    receivedEncodedMessage[randomPosition] = 1;
+                } else {
+                    receivedEncodedMessage[randomPosition] = 0;
+                }
+                printUtil.print("mistake in ").println(randomPosition);
+                bytesWithMistakes.add(randomPosition);
             } else {
-                receivedEncodedMessage[randomPosition] = 0;
+                i--;
             }
         }
 
@@ -220,6 +251,10 @@ public class Blueprint {
                 .printArray(calculatedRedundantBytes).println()
                 .println("the syndrome is")
                 .printArray(syndrome).println()
+                .println("the encoded message is")
+                .printArray(encodedMessage).println()
+                .println("the received encoded message is")
+                .printArray(receivedEncodedMessage).println()
                 .println("the recovery bytes are")
                 .printArray(recoveryBytes).println()
                 .println("the recovered message is")
@@ -232,7 +267,7 @@ public class Blueprint {
      * @since 1.1
      */
     public void cycleCodeBlueprint(int[] message, int numberOfInformationBytes, int codeWordLength,
-                                int[] generatingPolynomial, int numberOfMistakes) {
+                                   int[] generatingPolynomial, int numberOfMistakes) {
 
         CycleCode cycleCode = new CycleCode(stream);
 
@@ -246,17 +281,24 @@ public class Blueprint {
         // sending and receiving
 
         int[] receivedEncodedMessage = encodedMessage.clone();
+        List<Integer> bytesWithMistakes = new ArrayList<>();
 
         for (int i = 0; i < numberOfMistakes; i++) {
             int randomPosition = Math.abs(random.nextInt()) % receivedEncodedMessage.length;
-            if (receivedEncodedMessage[randomPosition] == 0) {
-                receivedEncodedMessage[randomPosition] = 1;
+            if (!bytesWithMistakes.contains(randomPosition)) {
+                if (receivedEncodedMessage[randomPosition] == 0) {
+                    receivedEncodedMessage[randomPosition] = 1;
+                } else {
+                    receivedEncodedMessage[randomPosition] = 0;
+                }
+                printUtil.print("mistake in ").println(randomPosition);
+                bytesWithMistakes.add(randomPosition);
             } else {
-                receivedEncodedMessage[randomPosition] = 0;
+                i--;
             }
         }
 
-        int[] syndrome = cycleCode.calculateSyndrome(receivedEncodedMessage, generatingPolynomial);
+        int[] syndrome = cycleCode.calculateSyndrome(receivedEncodedMessage, generatingPolynomial, numberOfInformationBytes);
         int[] recoveryBytes = cycleCode.getRecoveryBytes(generatingMatrix, syndrome, numberOfInformationBytes);
         int[] recoveredMessage = cycleCode.recoverMessage(receivedEncodedMessage, recoveryBytes);
 
@@ -274,6 +316,10 @@ public class Blueprint {
                 .printArray(receivedEncodedMessage).println()
                 .println("the syndrome is")
                 .printArray(syndrome).println()
+                .println("the encoded message is")
+                .printArray(encodedMessage).println()
+                .println("the received encoded message is")
+                .printArray(receivedEncodedMessage).println()
                 .println("the recovery bytes are")
                 .printArray(recoveryBytes).println()
                 .println("the recovered message is")
@@ -381,7 +427,9 @@ public class Blueprint {
      *
      * @since 1.1
      */
-    public void blockInterleavingSample(String message, int numberOfInformationBytes, int numberOfRedundantBytes){
+    public void blockInterleavingSample(String message, int numberOfInformationBytes,
+                                        int numberOfRedundantBytes, int numberOfDamagedPackage) {
+
         BlockInterleaving blockInterleaving = new BlockInterleaving(stream);
         int[] bytes = messageUtil.convertMessageToByteArray(message);
         int codeWordLength = numberOfInformationBytes + numberOfRedundantBytes;
@@ -392,8 +440,15 @@ public class Blueprint {
         int[] interleavedSequence = blockInterleaving.getInterleavedSequence(encodedWordMatrix);
 
         //sending and receiving
+        int[] receivedInterleavedSequence = interleavedSequence.clone();
 
-        int[][] deinterleavedSequenceMatrix = blockInterleaving.deinterleaveSequence(interleavedSequence, codeWordLength);
+        int packageLength = bytes.length / numberOfInformationBytes;
+        for(int i = 0; i < packageLength; i++){
+            receivedInterleavedSequence[numberOfDamagedPackage*packageLength + i] = 1
+                    ^ interleavedSequence[numberOfDamagedPackage * packageLength + i];
+        }
+
+        int[][] deinterleavedSequenceMatrix = blockInterleaving.deinterleaveSequence(receivedInterleavedSequence, codeWordLength);
         int[][] recoveredMatrix = blockInterleaving.recoverEncodedBytesMatrix(deinterleavedSequenceMatrix,
                 numberOfInformationBytes, numberOfRedundantBytes);
 
@@ -409,13 +464,17 @@ public class Blueprint {
                 .println("the encoded word matrix is")
                 .printMatrix(encodedWordMatrix)
                 .println("the interleaved sequence is")
-                .printArray(interleavedSequence)
+                .printArray(interleavedSequence).println()
+                .println("the received interleaved sequence is")
+                .printArray(receivedInterleavedSequence).println()
                 .println("the deinterleaved sequence matrix is")
                 .printMatrix(deinterleavedSequenceMatrix)
                 .println("the recovered matrix is")
                 .printMatrix(recoveredMatrix)
                 .println("the decoded bytes matrix is")
                 .printMatrix(decodedBytesMatrix)
+                .println("the sent message is")
+                .printArray(bytes).println()
                 .println("the decoded message is")
                 .printArray(gottenMessage).println();
     }

@@ -59,7 +59,7 @@ public class CycleCode {
         int[][] generatingMatrix = new int[numberOfInformationBytes][codeWordLength];
 
         for (int i = 0; i < numberOfInformationBytes; i++) {
-            for (int j = 0; j < numberOfInformationBytes; j++) {
+            for (int j = 0; j < codeWordLength - numberOfInformationBytes + 1; j++) {
                 generatingMatrix[i][j + i] = generatingPolynomial[j];
             }
         }
@@ -75,8 +75,8 @@ public class CycleCode {
      * @return a syndrome
      * @since 1.0
      */
-    public int[] calculateSyndrome(int[] encodedMessage, int[] generatingPolynomial) {
-        return getRedundantBytes(polynomialDivision(encodedMessage, generatingPolynomial), generatingPolynomial.length);
+    public int[] calculateSyndrome(int[] encodedMessage, int[] generatingPolynomial, int numberOfInformationBytes) {
+        return getRedundantBytes(polynomialDivision(encodedMessage, generatingPolynomial), numberOfInformationBytes);
     }
 
 
@@ -96,8 +96,8 @@ public class CycleCode {
      * @return redundant bytes
      * @since 1.0
      */
-    public int[] getRedundantBytes(int[] encodedMessage, int k) {
-        return Arrays.copyOfRange(encodedMessage, k, encodedMessage.length);
+    public int[] getRedundantBytes(int[] encodedMessage, int numberOfInformationBytes) {
+        return Arrays.copyOfRange(encodedMessage, numberOfInformationBytes, encodedMessage.length);
     }
 
     /**
@@ -119,6 +119,8 @@ public class CycleCode {
                 }
             }
         }
+
+        System.arraycopy(syndrome, 0, recoveryBytes, numberOfInformationBytes, syndrome.length);
 
         return recoveryBytes;
     }
