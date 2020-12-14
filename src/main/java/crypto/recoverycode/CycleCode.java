@@ -19,7 +19,7 @@ public class CycleCode {
 
     /**
      * Encode a given message by the cycle code way with using the generating polynomial
-     * @version 1.0
+     * @since 1.0
      * @return a encoded message
      */
     public int[] encode(int numberOfInformationBytes, int codeWordLength, int[] polynomial, int[] generatingPolynomial) {
@@ -47,7 +47,7 @@ public class CycleCode {
 
     /**
      * Generate a matrix on the base of a generating polynomial by the shift way
-     * @version 1.0
+     * @since 1.0
      * @return a generating matrix
      */
     public int[][] getGeneratingMatrix(int numberOfInformationBytes, int codeWordLength, int[] generatingPolynomial) {
@@ -70,7 +70,7 @@ public class CycleCode {
 
     /**
      * Calculate a syndrome on the base of a encoded message and a generating polynomial
-     * @version 1.0
+     * @since 1.0
      * @return a syndrome
      */
     public int[] calculateSyndrome(int[] encodedMessage, int[] generatingPolynomial) {
@@ -80,7 +80,7 @@ public class CycleCode {
 
     /**
      * Cut the information bytes in a given message
-     * @version 1.0
+     * @since 1.0
      * @return information bytes
      */
     public int[] getInformationBytes(int[] encodedMessage, int numberOfInformationBytes){
@@ -89,7 +89,7 @@ public class CycleCode {
 
     /**
      * Cut the redundant bytes in a given message
-     * @version 1.0
+     * @since 1.0
      * @return redundant bytes
      */
     public int[] getRedundantBytes(int[] encodedMessage, int k){
@@ -98,7 +98,7 @@ public class CycleCode {
 
     /**
      * Calculate on the base of a given syndrome recovery bytes which will be used to recovery a received message
-     * @version 1.0
+     * @since 1.0
      * @return recovery bytes
      */
     public int[] getRecoveryBytes(int[][] generatingMatrix, int[] syndrome, int k){
@@ -120,7 +120,7 @@ public class CycleCode {
 
     /**
      * Recover a given message by a XOR operation using the recovery bytes
-     * @version 1.0
+     * @since 1.0
      */
     public void recoverMessage(int[] encodedMessage, int[] recoverySequence){
         matrixUtil.rowSum(encodedMessage, recoverySequence);
@@ -128,7 +128,7 @@ public class CycleCode {
 
     /**
      * Format a given generating matrix to the canon view
-     * @version 1.0
+     * @since 1.0
      */
     private void formatGeneratingMatrix(int[][] generatingMatrix) {
         for (int i = 0; i < generatingMatrix.length; i++) {
@@ -142,7 +142,7 @@ public class CycleCode {
 
     /**
      * Divide two polynomial on the base of a XOR operation
-     * @version 1.0
+     * @since 1.0
      * @return a rest of division
      */
     private int[] polynomialDivision(int[] firstPoly, int[] secondPoly) {
@@ -177,7 +177,7 @@ public class CycleCode {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return a max degree of polynomial elements
      */
     private int getPolyDegree(int[] polynomial) {
@@ -191,7 +191,7 @@ public class CycleCode {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return a number of zeros till the any one in the start of message
      */
     private int getPolyOffset(int[] polynomial) {
@@ -206,7 +206,7 @@ public class CycleCode {
 
     /**
      * Trim zeros from from the start of array
-     * @version 1.0
+     * @since 1.0
      * @return a trimmed poly
      */
     private int[] trimPolyZero(int[] polynomial) {

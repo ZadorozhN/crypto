@@ -15,7 +15,7 @@ public class ModifiedHammingCode {
     /**
      * Modify a given matrix and after this modifying there is a way to use this matrix in modified hamming encoding way.
      * Notice that number of redundant bytes have been incremented
-     * @version 1.0
+     * @since 1.0
      * @return a modified check matrix
      */
     public int[][] modifyCheckMatrix(int[][] checkMatrix){
@@ -37,7 +37,7 @@ public class ModifiedHammingCode {
 
     /**
      * Sum all cell's values of column on the base of a XOR operation and place the result on the end of column
-     * @version 1.0
+     * @since 1.0
      */
     private void sumMatrixColumn(int[][] matrix){
         for(int i = 0; i < matrix[0].length; i++) {

@@ -2,7 +2,6 @@ package crypto.interleaving;
 
 import crypto.recoverycode.HammingCode;
 import crypto.util.PrintUtil;
-
 import java.io.PrintStream;
 
 public final class BlockInterleaving {
@@ -19,7 +18,7 @@ public final class BlockInterleaving {
      * Divide a given message into smaller strings with a given length
      * @param message will be divided
      * @param numberOfInformationBytes length of smaller words
-     * @version 1.0
+     * @since 1.0
      * @return a matrix with the smaller words
      */
     public int[][] getInformationBytesMatrix(int[] message, int numberOfInformationBytes) {
@@ -40,7 +39,7 @@ public final class BlockInterleaving {
      * @param numberOfInformationBytes a length of information words
      * @param numberOfRedundantBytes a length of redundant bytes array
      * @param codeWordLength a total length of word include the information bytes and redundant bytes
-     * @version 1.0
+     * @since 1.0
      * @return an encoded bytes matrix
      */
     public int[][] getEncodedBytesMatrix(int[][] informationMatrix, int numberOfInformationBytes,
@@ -59,7 +58,7 @@ public final class BlockInterleaving {
 
     /**
      * Merge encoded words into a message using the interleaving way
-     * @version 1.0
+     * @since 1.0
      * @return an interleaved sequence
      */
     public int[] getInterleavedSequence(int[][] encodedBytesMatrix) {
@@ -76,7 +75,7 @@ public final class BlockInterleaving {
      * Unmerge a message into a matrix of encoded words using the interleaving way
      * @param interleavedSequence a sequence of interleaved words
      * @param codeWordLength a length of any encoded word
-     * @version 1.0
+     * @since 1.0
      * @return a matrix of encoded words
      */
     public int[][] deinterleaveSequence(int[] interleavedSequence, int codeWordLength) {
@@ -97,7 +96,7 @@ public final class BlockInterleaving {
      * @param numberOfInformationBytes a length of information words
      * @param numberOfRedundantBytes a length of redundant bytes array
      * @param codeWordLength a total length of word include the information bytes and redundant bytes
-     * @version 1.0
+     * @since 1.0
      * @return a recovered bytes matrix
      */
     public int[][] recoverEncodedBytesMatrix(int[][] encodedMatrix, int numberOfInformationBytes,
@@ -126,7 +125,7 @@ public final class BlockInterleaving {
 
     /**
      * Cut the information bytes of words and return these as a matrix of decoded words
-     * @version 1.0
+     * @since 1.0
      * @return a matrix of information words
      */
     public int[][] decodeBytesMatrix(int[][] encodedMatrix, int numberOfInformationBytes) {
@@ -144,7 +143,7 @@ public final class BlockInterleaving {
     /**
      * Concatenate smaller words into the one word
      * @param decodedBytesMatrix a matrix of smaller words
-     * @version 1.0
+     * @since  1.0
      * @return a message that was divided in the start
      */
     public int[] getMessageSequence(int[][] decodedBytesMatrix) {

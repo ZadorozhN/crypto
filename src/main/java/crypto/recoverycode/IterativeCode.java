@@ -15,7 +15,7 @@ public class IterativeCode {
 
     /**
      * Build a matrix which will be used to encode any message by iterative coding way
-     * @version 1.0
+     * @since 1.0
      */
     public int[][] buildMatrix(int[] message, int numberOfRows, int numberOfColumns) {
         int[][] matrix = new int[numberOfRows + 1][numberOfColumns + 1];
@@ -36,7 +36,7 @@ public class IterativeCode {
 
     /**
      * Add redundant bytes to a matrix which have filled by a message
-     * @version 1.0
+     * @since 1.0
      * @return a matrix with redundant bytes
      */
     public int[][] addRedundantBytes(int[][] matrix, int numberOfRows, int numberOfColumns) {
@@ -58,7 +58,7 @@ public class IterativeCode {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return a submatrix without redundant bytes on the sides
      */
     public int[][] getMatrixWithoutRedundantBytes(int[][] matrix, int numberOfRows, int numberOfColumns) {
@@ -72,7 +72,7 @@ public class IterativeCode {
 
     /**
      * Convert a given matrix to a message
-     * @version 1.0
+     * @since 1.0
      * @return a message from matrix with redundant bytes in the end of message
      */
     public int[] convertMatrixToMessage(int[][] matrix, int numberOfRows, int numberOfColumns) {
@@ -91,7 +91,7 @@ public class IterativeCode {
 
     /**
      * Convert a given message to a matrix
-     * @version 1.0
+     * @since 1.0
      * @return a matrix with redundant bytes on the sides
      */
     public int[][] convertMessageToMatrix(int[] messageWithRedundantBytes, int numberOfRows, int numberOfColumns) {
@@ -116,7 +116,7 @@ public class IterativeCode {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return redundant bytes from the sides of matrix
      */
     public int[] getRedundantBytesFromMatrix(int[][] matrix, int numberOfRows, int numberOfColumns) {
@@ -136,7 +136,7 @@ public class IterativeCode {
 
     /**
      * Cut the last bytes of a given message and return these
-     * @version 1.0
+     * @since 1.0
      * @return redundant bytes from the end of given message
      */
     public int[] getRedundantBytesFromMessage(int[] messageWithRedundantBytes, int numberOfRows, int numberOfColumns) {
@@ -150,7 +150,7 @@ public class IterativeCode {
 
     /**
      * Calculate redundant bytes on the base of a received message
-     * @version 1.0
+     * @since 1.0
      * @return calculated redundant bytes
      */
     public int[] calculateRedundantBytes(int[] messageWithoutRedundantBytes, int numberOfRows, int numberOfColumns) {
@@ -162,7 +162,7 @@ public class IterativeCode {
     /**
      * Calculate a parity of the parities which have been calculated on the base of all bytes of the message
      * except the last byte that is the parity of parities
-     * @version 1.0
+     * @since 1.0
      * @return a parity of the parities
      */
     private int calculateTotalSum(int[][] matrix) {
@@ -182,7 +182,7 @@ public class IterativeCode {
 
     /**
      * Calculate a syndrome that consists an error state which will be used to calculate recovery bytes
-     * @version 1.0
+     * @since 1.0
      * @return a syndrome of message
      */
     public int[] getSyndrome(int[] redundantBytes, int[] calculatedRedundantBytes, int[] message,
@@ -201,7 +201,7 @@ public class IterativeCode {
 
     /**
      * Cut the last bytes of a message which contains redundant bytes
-     * @version 1.0
+     * @since 1.0
      * @return a message without redundant bytes
      */
     public int[] getMessageWithoutRedundantBytes(int[] messageWithRedundantBytes,
@@ -211,7 +211,7 @@ public class IterativeCode {
 
     /**
      * Calculate on the base of a given syndrome recovery bytes which will be used to recovery a received message
-     * @version 1.0
+     * @since 1.0
      * @return recovery bytes
      */
     public int[] getRecoveryBytes(int[] syndrome, int numberOfRows, int numberOfColumns) {
@@ -235,7 +235,7 @@ public class IterativeCode {
 
     /**
      * Recover a given message by a XOR operation using the recovery bytes
-     * @version 1.0
+     * @since 1.0
      */
     public void recoverMessage(int[] message, int[] recoveryBytes){
         for (int i = 0; i < recoveryBytes.length && i < message.length; i++) {

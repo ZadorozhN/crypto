@@ -14,7 +14,7 @@ public final class HammingCode {
 
     /**
      * Generate a check matrix which will be used to encode any message by hamming way
-     * @version 1.0
+     * @since 1.0
      * @return a check matrix
      */
     public int[][] getCheckMatrix(int numberOfInformationBytes, int numberOfRedundantBytes) {
@@ -49,7 +49,7 @@ public final class HammingCode {
     /**
      * Print a given message in the hamming code way
      * with using the separator between the information bytes and redundant bytes
-     * @version 1.0
+     * @since 1.0
      */
     public void printEncodedMessage(int[] encodedMessage, int numberOfInformationBytes) {
         for (int i = 0; i < encodedMessage.length; i++) {
@@ -62,7 +62,7 @@ public final class HammingCode {
 
     /**
      * Add to a given message redundant bytes on the base of a check matrix
-     * @version 1.0
+     * @since 1.0
      * @return a encoded message
      */
     public int[] encodeMessage(int[][] checkMatrix, int[] message,
@@ -85,7 +85,7 @@ public final class HammingCode {
 
     /**
      * Calculate redundant bytes on the base of a XOR operation
-     * @version 1.0
+     * @since 1.0
      * @return redundant bytes
      */
     public int[] calculateRedundantBytes(int[][] checkMatrix, int[] message,
@@ -103,7 +103,7 @@ public final class HammingCode {
 
     /**
      * Cut the last bytes of a given message which contains the redundant bytes
-     * @version 1.0
+     * @since 1.0
      * @return redundant bytes
      */
     public int[] getRedundantBytes(int[] message, int numberOfInformationBytes, int numberOfRedundantBytes) {
@@ -117,7 +117,7 @@ public final class HammingCode {
 
     /**
      * Calculate a syndrome that consists an error state which will be used to calculate recovery bytes
-     * @version 1.0
+     * @since 1.0
      * @return a syndrome of message
      */
     public int[] getSyndrome(int[] redundantBytes, int[] calculatedRedundantBytes) {
@@ -132,7 +132,7 @@ public final class HammingCode {
 
     /**
      * Calculate on the base of a given syndrome recovery bytes which will be used to recovery a received message
-     * @version 1.0
+     * @since 1.0
      * @return recovery bytes
      */
     public int[] getRecoveryBytes(int[] syndrome, int[][] checkMatrix,
@@ -158,7 +158,7 @@ public final class HammingCode {
 
     /**
      * Recover a given message by a XOR operation using the recovery bytes
-     * @version 1.0
+     * @since 1.0
      */
     public int[] recoverMessage(int[] message, int[] recoveringBytes) {
         int[] recoveredMessage = new int[message.length];

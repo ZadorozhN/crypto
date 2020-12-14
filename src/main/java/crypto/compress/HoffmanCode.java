@@ -20,7 +20,7 @@ public final class HoffmanCode {
 
     /**
      * Return the sequence of characters which will be used to encode message
-     * @version 1.0
+     * @since 1.0
      * @return a map with sequence of characters
      */
     public Map<Character, String> getHoffmanBinaryCodes(Map<Character, Double> probabilities) {
@@ -40,7 +40,7 @@ public final class HoffmanCode {
     /**
      * Help method which helps generate hoffman binary codes.
      * Generate sequence of ones and zeros
-     * @version 1.0
+     * @since 1.0
      */
     private void generateHoffmanBinaryCodes(Map<Character, StringBuilder> hoffmanBinaryCodes,
                                             List<Map.Entry<Character, Double>> entries, double pivotProbability) {
@@ -67,7 +67,7 @@ public final class HoffmanCode {
 
     /**
      * Build a string replacing characters with its sequence of ones and zeros
-     * @version 1.0
+     * @since 1.0
      * @return a sequence of ones and zeros
      */
     public String encodeMessageByHoffman(Map<Character, String> hoffmanBinaryCodes, String message) {
@@ -80,7 +80,7 @@ public final class HoffmanCode {
 
     /**
      * Build a string replacing sequence of ones and zeros with its characters
-     * @version 1.0
+     * @since 1.0
      * @return a decoded word
      */
     public String decodeMessageByHoffman(Map<Character, String> hoffmanBinaryCodes, String message) {

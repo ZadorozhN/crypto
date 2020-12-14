@@ -21,7 +21,7 @@ public final class EntropyUtil {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return a entropy of an alphabet on the base of a given file
      */
     public double calculateEntropy(String pathToFile, int[] alphabet) {
@@ -33,7 +33,7 @@ public final class EntropyUtil {
 
     /**
      * Calculate a entropy of an alphabet with the condition that all probabilities of symbols equal to each other
-     * @version 1.0
+     * @since 1.0
      * @return a entropy of an alphabet
      */
     public double calculateEntropyWithEqualProbabilityOfSymbols(int lengthOfAlphabet) {
@@ -44,7 +44,7 @@ public final class EntropyUtil {
     /**
      * Calculate a entropy of an alphabet with the condition that all probabilities of symbols equal to each other
      * considering a mistake chance
-     * @version 1.0
+     * @since 1.0
      * @return a entropy of an alphabet
      */
     public double calculateEffectiveEntropyForBinaryAlphabet(double mistakeChance) {
@@ -59,7 +59,7 @@ public final class EntropyUtil {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return probabilities of all chars of the given alphabet of a given file
      */
     public Map<Character, Double> getProbabilitiesOfChars(String pathToFile, int[] alphabet) {
@@ -88,7 +88,7 @@ public final class EntropyUtil {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return probabilities of all chars of the given alphabet of a given message
      */
     public Map<Character, Double> getProbabilitiesOfCharsByMessage(String message, int[] alphabet) {
@@ -108,7 +108,7 @@ public final class EntropyUtil {
     }
 
     /**
-     * @version 1.0
+     * @since 1.0
      * @return an integer array of an alphabet characters codes
      */
     public int[] initializeAlphabet(Alphabet language) {

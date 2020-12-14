@@ -25,7 +25,7 @@ public final class ArithmeticEncoding {
 
     /**
      * Encode a given message by the arithmetic way
-     * @version 1.0
+     * @since 1.0
      * @return a floating-point number that identifies a given word
      */
     public double encode(String message) {
@@ -51,7 +51,7 @@ public final class ArithmeticEncoding {
 
     /**
      * Decode a given message by the arithmetic way
-     * @version 1.0
+     * @since 1.0
      * @return a decoded word
      */
     public String decode(Map<Character, Double> entropy, double encodedWord, int numberOfCharsInMessage) {
@@ -97,7 +97,7 @@ public final class ArithmeticEncoding {
 
     /**
      * Util method that marks intervals during an encoding
-     * @version 1.0
+     * @since 1.0
      * @return a code of characters sequence
      */
     private double marking(Map<Character, Properties> map, char[] message,

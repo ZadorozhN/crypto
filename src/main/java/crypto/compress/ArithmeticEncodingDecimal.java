@@ -22,7 +22,7 @@ public final class ArithmeticEncodingDecimal {
 
     /**
      * Encode a given message by the arithmetic way
-     * @version 1.0
+     * @since 1.0
      * @return a floating-point number that identifies a given word
      */
     public BigDecimal encode(String message) {
@@ -51,7 +51,7 @@ public final class ArithmeticEncodingDecimal {
 
     /**
      * Decode a given message by the arithmetic way
-     * @version 1.0
+     * @since 1.0
      * @return a decoded word
      */
     public String decode(Map<Character, Double> entropy, BigDecimal encodedWord, int numberOfCharsInMessage) {
@@ -104,7 +104,7 @@ public final class ArithmeticEncodingDecimal {
 
     /**
      * Util method that marks intervals during an encoding
-     * @version 1.0
+     * @since 1.0
      * @return a code of characters sequence
      */
     private BigDecimal marking(Map<Character, ArithmeticEncodingDecimal.Properties> map, char[] message,
