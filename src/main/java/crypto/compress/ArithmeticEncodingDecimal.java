@@ -22,12 +22,13 @@ public final class ArithmeticEncodingDecimal {
 
     /**
      * Encode a given message by the arithmetic way
-     * @since 1.0
+     *
      * @return a floating-point number that identifies a given word
+     * @since 1.0
      */
     public BigDecimal encode(String message) {
-        Map<Character, Double> entropy = entropyUtil.getProbabilitiesOfCharsByMessage(message, message.chars().toArray());
-        List<Map.Entry<Character, Double>> letters = entropy.entrySet().stream()
+        Map<Character, Double> probabilities = entropyUtil.getProbabilitiesOfCharsByMessage(message, message.chars().toArray());
+        List<Map.Entry<Character, Double>> letters = probabilities.entrySet().stream()
                 .sorted(EntropyUtil.getComparatorForEntropy().reversed()).collect(Collectors.toList());
 
         LinkedHashMap<Character, ArithmeticEncodingDecimal.Properties> lettersAndTheirProperties = new LinkedHashMap<>();
@@ -46,17 +47,18 @@ public final class ArithmeticEncodingDecimal {
                     + " / " + lettersAndTheirProperties.get(i.getKey()).probability);
         }
 
-        return marking(lettersAndTheirProperties, message.toCharArray(), entropy, 0);
+        return marking(lettersAndTheirProperties, message.toCharArray(), probabilities, 0);
     }
 
     /**
      * Decode a given message by the arithmetic way
-     * @since 1.0
+     *
      * @return a decoded word
+     * @since 1.0
      */
-    public String decode(Map<Character, Double> entropy, BigDecimal encodedWord, int numberOfCharsInMessage) {
+    public String decode(Map<Character, Double> probabilities, BigDecimal encodedWord, int numberOfCharsInMessage) {
         StringBuilder decodedMessage = new StringBuilder();
-        List<Map.Entry<Character, Double>> letters = entropy.entrySet().stream()
+        List<Map.Entry<Character, Double>> letters = probabilities.entrySet().stream()
                 .sorted(EntropyUtil.getComparatorForEntropy().reversed()).collect(Collectors.toList());
 
         LinkedHashMap<Character, ArithmeticEncodingDecimal.Properties> lettersAndTheirProperties = new LinkedHashMap<>();
@@ -75,24 +77,34 @@ public final class ArithmeticEncodingDecimal {
                     + " / " + lettersAndTheirProperties.get(i.getKey()).probability);
         }
 
+        BigDecimal higher = new BigDecimal(0);
+        BigDecimal lower = new BigDecimal(0);
+        boolean isFound = false;
+
         for (int i = 0; i < numberOfCharsInMessage; i++) {
             printUtil.println("step " + i);
 
             for (var j : lettersAndTheirProperties.entrySet()) {
                 if (j.getValue().lowerBorder.compareTo(encodedWord) < 0 && j.getValue().higherBorder.compareTo(encodedWord) > 0) {
                     decodedMessage.append(j.getKey());
-                    BigDecimal higher = lettersAndTheirProperties.get(j.getKey()).higherBorder;
-                    BigDecimal lower = lettersAndTheirProperties.get(j.getKey()).lowerBorder;
-                    for (var k : entropy.keySet()) {
-                        lettersAndTheirProperties.get(k).higherBorder =
-                                lower.add((higher.subtract(lower)).multiply(lettersAndTheirProperties
-                                        .get(k).startHigherBorder));
-                        lettersAndTheirProperties.get(k).lowerBorder =
-                                lower.add((higher.subtract(lower)).multiply(lettersAndTheirProperties
-                                        .get(k).startLowerBorder));
-                    }
+                    higher = lettersAndTheirProperties.get(j.getKey()).higherBorder;
+                    lower = lettersAndTheirProperties.get(j.getKey()).lowerBorder;
+                    isFound = true;
                 }
+            }
+            if (isFound) {
+                for (var k : probabilities.keySet()) {
+                    lettersAndTheirProperties.get(k).higherBorder =
+                            lower.add((higher.subtract(lower)).multiply(lettersAndTheirProperties
+                                    .get(k).startHigherBorder));
+                    lettersAndTheirProperties.get(k).lowerBorder =
+                            lower.add((higher.subtract(lower)).multiply(lettersAndTheirProperties
+                                    .get(k).startLowerBorder));
+                }
+                isFound = false;
+            }
 
+            for (var j : lettersAndTheirProperties.entrySet()) {
                 printUtil.println(j.getKey() + " :-: " + lettersAndTheirProperties.get(j.getKey()).lowerBorder
                         + " / " + lettersAndTheirProperties.get(j.getKey()).higherBorder
                         + " / " + lettersAndTheirProperties.get(j.getKey()).probability);
@@ -104,15 +116,16 @@ public final class ArithmeticEncodingDecimal {
 
     /**
      * Util method that marks intervals during an encoding
-     * @since 1.0
+     *
      * @return a code of characters sequence
+     * @since 1.0
      */
     private BigDecimal marking(Map<Character, ArithmeticEncodingDecimal.Properties> map, char[] message,
-                               Map<Character, Double> entropy, int currentLetter) {
+                               Map<Character, Double> probabilities, int currentLetter) {
         BigDecimal code;
         BigDecimal higher = map.get(message[currentLetter]).higherBorder;
         BigDecimal lower = map.get(message[currentLetter]).lowerBorder;
-        for (var i : entropy.keySet()) {
+        for (var i : probabilities.keySet()) {
             map.get(i).higherBorder = lower.add((higher.subtract(lower)).multiply(map.get(i).startHigherBorder));
             map.get(i).lowerBorder = lower.add((higher.subtract(lower)).multiply(map.get(i).startLowerBorder));
         }
@@ -125,9 +138,12 @@ public final class ArithmeticEncodingDecimal {
         }
 
         if (currentLetter < message.length - 1) {
-            code = marking(map, message, entropy, currentLetter + 1);
+            code = marking(map, message, probabilities, currentLetter + 1);
         } else {
-            code = map.get(message[currentLetter]).lowerBorder;
+            BigDecimal littleRest = map.get(message[currentLetter]).lowerBorder
+                    .divide(new BigDecimal(Math.pow(10, message.length)));
+            code = map.get(message[currentLetter]).lowerBorder
+                    .add(littleRest);
         }
 
         return code;

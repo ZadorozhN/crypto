@@ -14,12 +14,14 @@ public final class LempelZivCompress {
 
     /**
      * Compress a given message by the Lempel and Ziv way.
-     * @param dictionaryCapacity should not be more than 9
-     * @param  bufferCapacity should not be more than 9
-     * @since 1.0
+     *
+     * @param capacity should not be more than 9
      * @return a compressed message
+     * @since 1.0
      */
-    public String compress(String message, int dictionaryCapacity, int bufferCapacity) {
+    public String compress(String message, int capacity) {
+        int bufferCapacity = capacity;
+        int dictionaryCapacity = capacity;
         char[] dictionary = new char[dictionaryCapacity];
         char[] buffer = new char[bufferCapacity];
         char[] messageChars = message.toCharArray();
@@ -61,9 +63,10 @@ public final class LempelZivCompress {
 
     /**
      * Decompress a given message by the Lempel and Ziv way.
+     *
      * @param bufferCapacity should not be more than 9
-     * @since 1.0
      * @return a decompressed message
+     * @since 1.0
      */
     public String decompress(String message, int bufferCapacity) {
         StringBuilder decodedMessage = new StringBuilder();
@@ -92,8 +95,8 @@ public final class LempelZivCompress {
     }
 
     /**
-     * @since 1.0
      * @return a position of the symbol in the buffer
+     * @since 1.0
      */
     private int hasChar(char[] array, char symbol) {
         for (int i = 0; i < array.length; i++) {
@@ -105,8 +108,8 @@ public final class LempelZivCompress {
     }
 
     /**
-     * @since 1.0
      * @return a length of sequence of the buffer in the dictionary
+     * @since 1.0
      */
     private int getSequenceLength(char[] dictionary, char[] buffer, int currentPosition) {
         for (int i = 0; currentPosition + i < dictionary.length; i++) {
@@ -121,6 +124,7 @@ public final class LempelZivCompress {
 
     /**
      * Fill the buffer with characters of a given message
+     *
      * @since 1.0
      */
     private void fillBuffer(char[] buffer, char[] message) {
@@ -137,6 +141,7 @@ public final class LempelZivCompress {
 
     /**
      * Shift to the left three containers of the characters with moving the characters towards each other
+     *
      * @since 1.0
      */
     private void shiftLeft(char[] dictionary, char[] buffer, char[] message) {
@@ -162,6 +167,7 @@ public final class LempelZivCompress {
 
     /**
      * Shift to the left three containers of the characters with moving the characters towards each other
+     *
      * @param count a number of shifts
      * @since 1.0
      */
@@ -178,6 +184,7 @@ public final class LempelZivCompress {
 
     /**
      * Shift from the buffer to the decoded message
+     *
      * @since 1.0
      */
     private void shiftLeftToDecodedMessage(char[] buffer, StringBuilder decodedMessage, int count) {
@@ -197,6 +204,7 @@ public final class LempelZivCompress {
 
     /**
      * Decode triad as position of char in the buffer, length of sequence in the buffer and character
+     *
      * @since 1.0
      */
     private void decodeTriadInBuffer(char[] buffer, char[] message, StringBuilder decodedMessage,

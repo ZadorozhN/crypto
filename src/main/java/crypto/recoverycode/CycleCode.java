@@ -19,20 +19,24 @@ public class CycleCode {
 
     /**
      * Encode a given message by the cycle code way with using the generating polynomial
-     * @since 1.0
+     *
      * @return a encoded message
+     * @since 1.0
      */
     public int[] encode(int numberOfInformationBytes, int codeWordLength, int[] polynomial, int[] generatingPolynomial) {
-        int numberOfRedundantBytes = codeWordLength - numberOfInformationBytes;
-        int[] mainPolynomial = new int[numberOfInformationBytes + numberOfRedundantBytes];
+        int[] mainPolynomial = new int[codeWordLength];
 
         for (int i = 0; i < numberOfInformationBytes; i++) {
             mainPolynomial[i] = polynomial[i];
         }
 
-        int[] redundantBytes = trimPolyZero(polynomialDivision(mainPolynomial, generatingPolynomial));
+        int[] redundantBytes = new int[codeWordLength - numberOfInformationBytes];
+        int[] rest = trimPolyZero(polynomialDivision(mainPolynomial, generatingPolynomial));
+        int startPosition = redundantBytes.length - rest.length;
 
-        int[] encodedMessage = new int[polynomial.length + redundantBytes.length];
+        System.arraycopy(rest, 0, redundantBytes, startPosition, rest.length);
+
+        int[] encodedMessage = new int[codeWordLength];
 
         for (int i = 0; i < encodedMessage.length; i++) {
             if (i < polynomial.length) {
@@ -47,14 +51,11 @@ public class CycleCode {
 
     /**
      * Generate a matrix on the base of a generating polynomial by the shift way
-     * @since 1.0
+     *
      * @return a generating matrix
+     * @since 1.0
      */
     public int[][] getGeneratingMatrix(int numberOfInformationBytes, int codeWordLength, int[] generatingPolynomial) {
-        int[] mainPolynomial = new int[codeWordLength];
-        mainPolynomial[0] = 1;
-        mainPolynomial[codeWordLength - 1] = 1;
-
         int[][] generatingMatrix = new int[numberOfInformationBytes][codeWordLength];
 
         for (int i = 0; i < numberOfInformationBytes; i++) {
@@ -70,8 +71,9 @@ public class CycleCode {
 
     /**
      * Calculate a syndrome on the base of a encoded message and a generating polynomial
-     * @since 1.0
+     *
      * @return a syndrome
+     * @since 1.0
      */
     public int[] calculateSyndrome(int[] encodedMessage, int[] generatingPolynomial) {
         return getRedundantBytes(polynomialDivision(encodedMessage, generatingPolynomial), generatingPolynomial.length);
@@ -80,35 +82,38 @@ public class CycleCode {
 
     /**
      * Cut the information bytes in a given message
-     * @since 1.0
+     *
      * @return information bytes
+     * @since 1.0
      */
-    public int[] getInformationBytes(int[] encodedMessage, int numberOfInformationBytes){
+    public int[] getInformationBytes(int[] encodedMessage, int numberOfInformationBytes) {
         return Arrays.copyOfRange(encodedMessage, 0, numberOfInformationBytes);
     }
 
     /**
      * Cut the redundant bytes in a given message
-     * @since 1.0
+     *
      * @return redundant bytes
+     * @since 1.0
      */
-    public int[] getRedundantBytes(int[] encodedMessage, int k){
+    public int[] getRedundantBytes(int[] encodedMessage, int k) {
         return Arrays.copyOfRange(encodedMessage, k, encodedMessage.length);
     }
 
     /**
      * Calculate on the base of a given syndrome recovery bytes which will be used to recovery a received message
-     * @since 1.0
+     *
      * @return recovery bytes
+     * @since 1.0
      */
-    public int[] getRecoveryBytes(int[][] generatingMatrix, int[] syndrome, int k){
+    public int[] getRecoveryBytes(int[][] generatingMatrix, int[] syndrome, int numberOfInformationBytes) {
         int[] recoveryBytes = new int[generatingMatrix[0].length];
 
         for (int i = 0; i < generatingMatrix.length; i++) {
             for (int j = 0; j < syndrome.length; j++) {
-                if (generatingMatrix[i][k+j] != syndrome[j]){
+                if (generatingMatrix[i][numberOfInformationBytes + j] != syndrome[j]) {
                     break;
-                } else if(j == syndrome.length - 1){
+                } else if (j == syndrome.length - 1) {
                     recoveryBytes[i] = 1;
                     return recoveryBytes;
                 }
@@ -120,14 +125,22 @@ public class CycleCode {
 
     /**
      * Recover a given message by a XOR operation using the recovery bytes
+     *
      * @since 1.0
      */
-    public void recoverMessage(int[] encodedMessage, int[] recoverySequence){
-        matrixUtil.rowSum(encodedMessage, recoverySequence);
+    public int[] recoverMessage(int[] encodedMessage, int[] recoverySequence) {
+        int[] recoveredMessage = new int[encodedMessage.length];
+
+        for (int i = 0; i < recoveredMessage.length; i++){
+            recoveredMessage[i] = encodedMessage[i] ^ recoverySequence[i];
+        }
+
+        return recoveredMessage;
     }
 
     /**
      * Format a given generating matrix to the canon view
+     *
      * @since 1.0
      */
     private void formatGeneratingMatrix(int[][] generatingMatrix) {
@@ -142,8 +155,9 @@ public class CycleCode {
 
     /**
      * Divide two polynomial on the base of a XOR operation
-     * @since 1.0
+     *
      * @return a rest of division
+     * @since 1.0
      */
     private int[] polynomialDivision(int[] firstPoly, int[] secondPoly) {
         int[] resultPoly = firstPoly.clone();
@@ -177,8 +191,8 @@ public class CycleCode {
     }
 
     /**
-     * @since 1.0
      * @return a max degree of polynomial elements
+     * @since 1.0
      */
     private int getPolyDegree(int[] polynomial) {
         for (int i = 0; i < polynomial.length; i++) {
@@ -191,8 +205,8 @@ public class CycleCode {
     }
 
     /**
-     * @since 1.0
      * @return a number of zeros till the any one in the start of message
+     * @since 1.0
      */
     private int getPolyOffset(int[] polynomial) {
         for (int i = 0; i < polynomial.length; i++) {
@@ -206,8 +220,9 @@ public class CycleCode {
 
     /**
      * Trim zeros from from the start of array
-     * @since 1.0
+     *
      * @return a trimmed poly
+     * @since 1.0
      */
     private int[] trimPolyZero(int[] polynomial) {
         int trimTo = 0;

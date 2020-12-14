@@ -31,7 +31,19 @@ public final class PrintUtil {
     }
 
     public PrintUtil println(int number) {
-        stream.print(number + "\n");
+        stream.println(number);
+
+        return this;
+    }
+
+    public PrintUtil println(double number) {
+        stream.println(number);
+
+        return this;
+    }
+
+    public PrintUtil println(float number) {
+        stream.println(number);
 
         return this;
     }

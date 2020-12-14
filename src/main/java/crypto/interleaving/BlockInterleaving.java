@@ -16,10 +16,11 @@ public final class BlockInterleaving {
 
     /**
      * Divide a given message into smaller strings with a given length
-     * @param message will be divided
+     *
+     * @param message                  will be divided
      * @param numberOfInformationBytes length of smaller words
-     * @since 1.0
      * @return a matrix with the smaller words
+     * @since 1.0
      */
     public int[][] getInformationBytesMatrix(int[] message, int numberOfInformationBytes) {
         int[][] matrix = new int[((int) Math.ceil((double) message.length / numberOfInformationBytes))][numberOfInformationBytes];
@@ -35,16 +36,16 @@ public final class BlockInterleaving {
 
     /**
      * Encode words of the matrix separately and save those into a new encoded matrix
-     * @param informationMatrix a matrix with information words
+     *
+     * @param informationMatrix        a matrix with information words
      * @param numberOfInformationBytes a length of information words
-     * @param numberOfRedundantBytes a length of redundant bytes array
-     * @param codeWordLength a total length of word include the information bytes and redundant bytes
-     * @since 1.0
+     * @param numberOfRedundantBytes   a length of redundant bytes array
      * @return an encoded bytes matrix
+     * @since 1.0
      */
     public int[][] getEncodedBytesMatrix(int[][] informationMatrix, int numberOfInformationBytes,
-                                         int numberOfRedundantBytes, int codeWordLength) {
-        int[][] matrix = new int[informationMatrix.length][codeWordLength];
+                                         int numberOfRedundantBytes) {
+        int[][] matrix = new int[informationMatrix.length][numberOfInformationBytes + numberOfRedundantBytes];
 
         int[][] checkMatrix = hammingCode.getCheckMatrix(numberOfInformationBytes, numberOfRedundantBytes);
 
@@ -58,8 +59,9 @@ public final class BlockInterleaving {
 
     /**
      * Merge encoded words into a message using the interleaving way
-     * @since 1.0
+     *
      * @return an interleaved sequence
+     * @since 1.0
      */
     public int[] getInterleavedSequence(int[][] encodedBytesMatrix) {
         int[] sequence = new int[encodedBytesMatrix.length * encodedBytesMatrix[0].length];
@@ -73,10 +75,11 @@ public final class BlockInterleaving {
 
     /**
      * Unmerge a message into a matrix of encoded words using the interleaving way
+     *
      * @param interleavedSequence a sequence of interleaved words
-     * @param codeWordLength a length of any encoded word
-     * @since 1.0
+     * @param codeWordLength      a length of any encoded word
      * @return a matrix of encoded words
+     * @since 1.0
      */
     public int[][] deinterleaveSequence(int[] interleavedSequence, int codeWordLength) {
         int[][] matrix = new int[((int) Math.ceil((double) interleavedSequence.length / codeWordLength))][codeWordLength];
@@ -92,16 +95,17 @@ public final class BlockInterleaving {
 
     /**
      * Recover a given matrix of received interleaved sequence of encoded words by the hamming way
-     * @param encodedMatrix a matrix with encoded words
+     *
+     * @param encodedMatrix            a matrix with encoded words
      * @param numberOfInformationBytes a length of information words
-     * @param numberOfRedundantBytes a length of redundant bytes array
-     * @param codeWordLength a total length of word include the information bytes and redundant bytes
-     * @since 1.0
+     * @param numberOfRedundantBytes   a length of redundant bytes array
      * @return a recovered bytes matrix
+     * @since 1.0
      */
     public int[][] recoverEncodedBytesMatrix(int[][] encodedMatrix, int numberOfInformationBytes,
-                                             int numberOfRedundantBytes, int codeWordLength) {
+                                             int numberOfRedundantBytes) {
 
+        int codeWordLength = numberOfInformationBytes + numberOfRedundantBytes;
         int[][] recoveredBytesMatrix = new int[encodedMatrix.length][encodedMatrix[0].length];
         int[][] checkMatrix = hammingCode.getCheckMatrix(numberOfInformationBytes, numberOfRedundantBytes);
         int[][] syndromeMatrix = new int[encodedMatrix.length][numberOfRedundantBytes];
@@ -114,7 +118,7 @@ public final class BlockInterleaving {
             syndromeMatrix[i] = hammingCode.getSyndrome(yr, calculatedYr);
 
             int[] recoveringBytes = hammingCode.getRecoveryBytes(syndromeMatrix[i], checkMatrix,
-                    numberOfRedundantBytes, codeWordLength);
+                    numberOfInformationBytes, numberOfRedundantBytes);
 
             for (int j = 0; j < recoveredBytesMatrix[i].length; j++) {
                 recoveredBytesMatrix[i][j] = encodedMatrix[i][j] ^ recoveringBytes[j];
@@ -125,8 +129,9 @@ public final class BlockInterleaving {
 
     /**
      * Cut the information bytes of words and return these as a matrix of decoded words
-     * @since 1.0
+     *
      * @return a matrix of information words
+     * @since 1.0
      */
     public int[][] decodeBytesMatrix(int[][] encodedMatrix, int numberOfInformationBytes) {
         int[][] informationBytes = new int[encodedMatrix.length][numberOfInformationBytes];
@@ -142,9 +147,10 @@ public final class BlockInterleaving {
 
     /**
      * Concatenate smaller words into the one word
+     *
      * @param decodedBytesMatrix a matrix of smaller words
-     * @since  1.0
      * @return a message that was divided in the start
+     * @since 1.0
      */
     public int[] getMessageSequence(int[][] decodedBytesMatrix) {
         int[] sequence = new int[decodedBytesMatrix.length * decodedBytesMatrix[0].length];

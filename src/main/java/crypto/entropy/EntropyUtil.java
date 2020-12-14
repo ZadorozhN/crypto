@@ -21,31 +21,33 @@ public final class EntropyUtil {
     }
 
     /**
-     * @since 1.0
      * @return a entropy of an alphabet on the base of a given file
+     * @since 1.0
      */
     public double calculateEntropy(String pathToFile, int[] alphabet) {
         Map<Character, Double> probabilities = getProbabilitiesOfChars(pathToFile, alphabet);
 
-         return -probabilities.values().stream().mapToDouble(i -> i * Math.log(i)/Math.log(2)).sum();
+        return -probabilities.values().stream().mapToDouble(i -> i * Math.log(i) / Math.log(2)).sum();
 
     }
 
     /**
      * Calculate a entropy of an alphabet with the condition that all probabilities of symbols equal to each other
-     * @since 1.0
+     *
      * @return a entropy of an alphabet
+     * @since 1.0
      */
     public double calculateEntropyWithEqualProbabilityOfSymbols(int lengthOfAlphabet) {
         return -IntStream.range(0, lengthOfAlphabet)
-                .mapToDouble(i -> 1d/lengthOfAlphabet * Math.log(1d/lengthOfAlphabet)/Math.log(2)).sum();
+                .mapToDouble(i -> 1d / lengthOfAlphabet * Math.log(1d / lengthOfAlphabet) / Math.log(2)).sum();
     }
 
     /**
      * Calculate a entropy of an alphabet with the condition that all probabilities of symbols equal to each other
      * considering a mistake chance
-     * @since 1.0
+     *
      * @return a entropy of an alphabet
+     * @since 1.0
      */
     public double calculateEffectiveEntropyForBinaryAlphabet(double mistakeChance) {
         double lossOfInformation = 0;
@@ -59,8 +61,8 @@ public final class EntropyUtil {
     }
 
     /**
-     * @since 1.0
      * @return probabilities of all chars of the given alphabet of a given file
+     * @since 1.0
      */
     public Map<Character, Double> getProbabilitiesOfChars(String pathToFile, int[] alphabet) {
         Map<Integer, FrequencyOfLetter> frequency = new HashMap<>();
@@ -88,8 +90,8 @@ public final class EntropyUtil {
     }
 
     /**
-     * @since 1.0
      * @return probabilities of all chars of the given alphabet of a given message
+     * @since 1.0
      */
     public Map<Character, Double> getProbabilitiesOfCharsByMessage(String message, int[] alphabet) {
         Map<Integer, FrequencyOfLetter> frequency = new HashMap<>();
@@ -108,8 +110,8 @@ public final class EntropyUtil {
     }
 
     /**
-     * @since 1.0
      * @return an integer array of an alphabet characters codes
+     * @since 1.0
      */
     public int[] initializeAlphabet(Alphabet language) {
 

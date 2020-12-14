@@ -26,6 +26,9 @@ Small java crypto library
 ## Alphabet (alphabet package)
 - Alphabet
 
+## Blueprint
+Just pass the arguments and get the answer as a report to pointed IOStream
+
 ## Examples
 
 ```java

@@ -4,6 +4,7 @@ public class MatrixUtil {
 
     /**
      * Swap values of given arrays of any matrix
+     *
      * @since 1.0
      */
     public void swapTwoRows(int[] row1, int[] row2) {
@@ -16,6 +17,7 @@ public class MatrixUtil {
 
     /**
      * Sum values of given arrays of any matrix and save the result as values of first array
+     *
      * @since 1.0
      */
     public void rowSum(int[] row1, int[] row2) {
@@ -31,9 +33,10 @@ public class MatrixUtil {
 
     /**
      * Sort rows of matrix by the alphabet.
+     *
      * @since 1.0
      */
-    public void sortMatrixByAlphabet(int[][] matrix){
+    public void sortMatrixByAlphabet(int[][] matrix) {
         int lengthOfWord = matrix.length;
 
         for (int i = 0; i < lengthOfWord - 1; i++) {

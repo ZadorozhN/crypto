@@ -14,8 +14,9 @@ public final class HammingCode {
 
     /**
      * Generate a check matrix which will be used to encode any message by hamming way
-     * @since 1.0
+     *
      * @return a check matrix
+     * @since 1.0
      */
     public int[][] getCheckMatrix(int numberOfInformationBytes, int numberOfRedundantBytes) {
         int[][] matrix = new int[numberOfRedundantBytes][numberOfInformationBytes + numberOfRedundantBytes];
@@ -29,11 +30,11 @@ public final class HammingCode {
                     key = !key;
                 }
 
-                if(j == 0){
+                if (j == 0) {
                     continue;
-                } else if(Math.log(j) / Math.log(2) % 1 == 0){
+                } else if (Math.log(j) / Math.log(2) % 1 == 0) {
                     continue;
-                } else if(!key) {
+                } else if (!key) {
                     matrix[i][counter] = 1;
                 }
                 counter++;
@@ -49,6 +50,7 @@ public final class HammingCode {
     /**
      * Print a given message in the hamming code way
      * with using the separator between the information bytes and redundant bytes
+     *
      * @since 1.0
      */
     public void printEncodedMessage(int[] encodedMessage, int numberOfInformationBytes) {
@@ -62,8 +64,9 @@ public final class HammingCode {
 
     /**
      * Add to a given message redundant bytes on the base of a check matrix
-     * @since 1.0
+     *
      * @return a encoded message
+     * @since 1.0
      */
     public int[] encodeMessage(int[][] checkMatrix, int[] message,
                                int numberOfInformationBytes, int numberOfRedundantBytes) {
@@ -85,8 +88,9 @@ public final class HammingCode {
 
     /**
      * Calculate redundant bytes on the base of a XOR operation
-     * @since 1.0
+     *
      * @return redundant bytes
+     * @since 1.0
      */
     public int[] calculateRedundantBytes(int[][] checkMatrix, int[] message,
                                          int numberOfInformationBytes, int numberOfRedundantBytes) {
@@ -103,8 +107,9 @@ public final class HammingCode {
 
     /**
      * Cut the last bytes of a given message which contains the redundant bytes
-     * @since 1.0
+     *
      * @return redundant bytes
+     * @since 1.0
      */
     public int[] getRedundantBytes(int[] message, int numberOfInformationBytes, int numberOfRedundantBytes) {
         int[] redundantBytes = new int[numberOfRedundantBytes];
@@ -117,8 +122,9 @@ public final class HammingCode {
 
     /**
      * Calculate a syndrome that consists an error state which will be used to calculate recovery bytes
-     * @since 1.0
+     *
      * @return a syndrome of message
+     * @since 1.0
      */
     public int[] getSyndrome(int[] redundantBytes, int[] calculatedRedundantBytes) {
         int[] syndrome = new int[redundantBytes.length];
@@ -132,8 +138,9 @@ public final class HammingCode {
 
     /**
      * Calculate on the base of a given syndrome recovery bytes which will be used to recovery a received message
-     * @since 1.0
+     *
      * @return recovery bytes
+     * @since 1.0
      */
     public int[] getRecoveryBytes(int[] syndrome, int[][] checkMatrix,
                                   int numberOfInformationBytes, int numberOfRedundantBytes) {
@@ -158,6 +165,7 @@ public final class HammingCode {
 
     /**
      * Recover a given message by a XOR operation using the recovery bytes
+     *
      * @since 1.0
      */
     public int[] recoverMessage(int[] message, int[] recoveringBytes) {
@@ -170,4 +178,3 @@ public final class HammingCode {
         return recoveredMessage;
     }
 }
-
