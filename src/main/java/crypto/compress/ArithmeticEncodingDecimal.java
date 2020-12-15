@@ -27,6 +27,7 @@ public final class ArithmeticEncodingDecimal {
      * @since 1.0
      */
     public BigDecimal encode(String message) {
+        printUtil.println("Encoding...");
         Map<Character, Double> probabilities = entropyUtil.getProbabilitiesOfCharsByMessage(message, message.chars().toArray());
         List<Map.Entry<Character, Double>> letters = probabilities.entrySet().stream()
                 .sorted(EntropyUtil.getComparatorForEntropy().reversed()).collect(Collectors.toList());
@@ -57,6 +58,7 @@ public final class ArithmeticEncodingDecimal {
      * @since 1.0
      */
     public String decode(Map<Character, Double> probabilities, BigDecimal encodedWord, int numberOfCharsInMessage) {
+        printUtil.println("Decoding...");
         StringBuilder decodedMessage = new StringBuilder();
         List<Map.Entry<Character, Double>> letters = probabilities.entrySet().stream()
                 .sorted(EntropyUtil.getComparatorForEntropy().reversed()).collect(Collectors.toList());
@@ -141,7 +143,7 @@ public final class ArithmeticEncodingDecimal {
             code = marking(map, message, probabilities, currentLetter + 1);
         } else {
             BigDecimal littleRest = map.get(message[currentLetter]).lowerBorder
-                    .divide(new BigDecimal(Math.pow(10, message.length)));
+                    .divide(new BigDecimal(10).pow(message.length));
             code = map.get(message[currentLetter]).lowerBorder
                     .add(littleRest);
         }
