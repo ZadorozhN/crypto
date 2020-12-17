@@ -32,6 +32,21 @@ public final class EntropyUtil {
     }
 
     /**
+     * @return a entropy of an alphabet on the base of a given message
+     * @since 1.3
+     */
+    public double calculateEntropy(String message) {
+        Map<Character, Double> probabilities = getProbabilitiesOfCharsByMessage(message, message.chars().toArray());
+
+        printUtil.println("probabilities of chars of a given message")
+                .printMap(probabilities);
+
+        return -probabilities.values().stream().mapToDouble(i -> i * Math.log(i) / Math.log(2)).sum();
+
+    }
+
+
+    /**
      * Calculate a entropy of an alphabet with the condition that all probabilities of symbols equal to each other
      *
      * @return a entropy of an alphabet
@@ -52,7 +67,7 @@ public final class EntropyUtil {
     public double calculateEffectiveEntropyForBinaryAlphabet(double mistakeChance) {
         double lossOfInformation = 0;
 
-        if (mistakeChance != 0) {
+        if (mistakeChance != 0 && mistakeChance != 1) {
             lossOfInformation = -mistakeChance * Math.log(mistakeChance) / Math.log(2)
                     - (1 - mistakeChance) * Math.log(1 - mistakeChance) / Math.log(2);
         }

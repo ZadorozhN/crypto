@@ -2,7 +2,7 @@ package crypto.blueprint;
 
 import crypto.compress.ArithmeticEncoding;
 import crypto.compress.ArithmeticEncodingDecimal;
-import crypto.compress.HoffmanCode;
+import crypto.compress.ShannonFanoCode;
 import crypto.compress.LempelZivCompress;
 import crypto.entropy.EntropyUtil;
 import crypto.interleaving.BlockInterleaving;
@@ -371,18 +371,19 @@ public class Blueprint {
     }
 
     /**
-     * Hoffman code usage blueprint
+     * Shannon fano code usage blueprint
      *
      * @since 1.1
      */
-    public void hoffmanCodeBlueprint(String message, int[] alphabet) {
-        HoffmanCode hoffmanCode = new HoffmanCode(stream);
+    public void shannonFanoCodeBlueprint(String message) {
+        ShannonFanoCode shannonFanoCode = new ShannonFanoCode(stream);
         EntropyUtil entropyUtil = new EntropyUtil(stream);
+        int[] alphabet = message.chars().toArray();
 
         Map<Character, Double> probabilities = entropyUtil.getProbabilitiesOfCharsByMessage(message, alphabet);
-        Map<Character, String> hoffmanCodes = hoffmanCode.getHoffmanBinaryCodes(probabilities);
-        String encodedMessage = hoffmanCode.encodeMessageByHoffman(hoffmanCodes, message);
-        String decodedMessage = hoffmanCode.decodeMessageByHoffman(hoffmanCodes, encodedMessage);
+        Map<Character, String> shannonFanoCodes = shannonFanoCode.getShannonFanoBinaryCodes(probabilities);
+        String encodedMessage = shannonFanoCode.encodeMessageByShannonFano(shannonFanoCodes, message);
+        String decodedMessage = shannonFanoCode.decodeMessageByShannonFano(shannonFanoCodes, encodedMessage);
         int lengthOfWordAsciiCodingWay = message.length() * MessageUtil.US_ASCII_CHAR_BYTE_LENGTH;
 
         printUtil.println("the message is")
@@ -390,7 +391,7 @@ public class Blueprint {
                 .println("the probabilities of chars are")
                 .printMap(probabilities)
                 .println("the hoffman chars codes are")
-                .printMap(hoffmanCodes).println()
+                .printMap(shannonFanoCodes).println()
                 .println("the encoded message")
                 .println(encodedMessage)
                 .println("the decoded message")

@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public final class HoffmanCode {
+public final class ShannonFanoCode {
 
     private final PrintUtil printUtil;
 
-    public HoffmanCode(PrintStream stream) {
+    public ShannonFanoCode(PrintStream stream) {
         this.printUtil = new PrintUtil(stream);
     }
 
@@ -24,14 +24,14 @@ public final class HoffmanCode {
      * @return a map with sequence of characters
      * @since 1.0
      */
-    public Map<Character, String> getHoffmanBinaryCodes(Map<Character, Double> probabilities) {
+    public Map<Character, String> getShannonFanoBinaryCodes(Map<Character, Double> probabilities) {
         Map<Character, StringBuilder> hoffmanBinaryCodesBuilder = new HashMap<>();
         Map<Character, String> hoffmanBinaryCodes = new HashMap<>();
 
         List<Map.Entry<Character, Double>> entries =
                 probabilities.entrySet().stream().sorted(EntropyUtil.getComparatorForEntropy()).collect(Collectors.toList());
         entries.forEach(e -> hoffmanBinaryCodesBuilder.put(e.getKey(), new StringBuilder()));
-        generateHoffmanBinaryCodes(hoffmanBinaryCodesBuilder, entries, 1d);
+        generateShannonFanoBinaryCodes(hoffmanBinaryCodesBuilder, entries, 1d);
         hoffmanBinaryCodesBuilder.forEach((key, value) -> hoffmanBinaryCodes.put(key, value.toString()));
 
         return hoffmanBinaryCodes;
@@ -39,13 +39,13 @@ public final class HoffmanCode {
 
 
     /**
-     * Help method which helps generate hoffman binary codes.
+     * Help method which helps generate shannon fano binary codes.
      * Generate sequence of ones and zeros
      *
      * @since 1.0
      */
-    private void generateHoffmanBinaryCodes(Map<Character, StringBuilder> hoffmanBinaryCodes,
-                                            List<Map.Entry<Character, Double>> entries, double pivotProbability) {
+    private void generateShannonFanoBinaryCodes(Map<Character, StringBuilder> shannonFanoBinaryCodes,
+                                                List<Map.Entry<Character, Double>> entries, double pivotProbability) {
         if (entries.size() < 2) return;
 
         List<Map.Entry<Character, Double>> great = new ArrayList<>();
@@ -54,17 +54,17 @@ public final class HoffmanCode {
         double probability = 0;
         for (var item : entries) {
             if (probability < pivotProbability / 2) {
-                hoffmanBinaryCodes.get(item.getKey()).append('1');
+                shannonFanoBinaryCodes.get(item.getKey()).append('1');
                 great.add(item);
             } else {
-                hoffmanBinaryCodes.get(item.getKey()).append('0');
+                shannonFanoBinaryCodes.get(item.getKey()).append('0');
                 less.add(item);
             }
             probability += item.getValue();
         }
 
-        generateHoffmanBinaryCodes(hoffmanBinaryCodes, great, pivotProbability / 2);
-        generateHoffmanBinaryCodes(hoffmanBinaryCodes, less, pivotProbability / 2);
+        generateShannonFanoBinaryCodes(shannonFanoBinaryCodes, great, pivotProbability / 2);
+        generateShannonFanoBinaryCodes(shannonFanoBinaryCodes, less, pivotProbability / 2);
     }
 
     /**
@@ -73,10 +73,10 @@ public final class HoffmanCode {
      * @return a sequence of ones and zeros
      * @since 1.0
      */
-    public String encodeMessageByHoffman(Map<Character, String> hoffmanBinaryCodes, String message) {
+    public String encodeMessageByShannonFano(Map<Character, String> shannonFanoBinaryCodes, String message) {
         StringBuilder encodedMessage = new StringBuilder();
 
-        message.chars().forEachOrdered(x -> encodedMessage.append(hoffmanBinaryCodes.get((char) x)));
+        message.chars().forEachOrdered(x -> encodedMessage.append(shannonFanoBinaryCodes.get((char) x)));
 
         return encodedMessage.toString();
     }
@@ -87,16 +87,16 @@ public final class HoffmanCode {
      * @return a decoded word
      * @since 1.0
      */
-    public String decodeMessageByHoffman(Map<Character, String> hoffmanBinaryCodes, String message) {
+    public String decodeMessageByShannonFano(Map<Character, String> shannonFanoBinaryCodes, String message) {
         StringBuilder decodedMessage = new StringBuilder();
         StringBuilder buffer = new StringBuilder();
         char[] messageChars = message.toCharArray();
 
         for (int i = 0; i < message.length(); i++) {
             buffer.append(messageChars[i]);
-            if (hoffmanBinaryCodes.containsValue(buffer.toString())) {
-                decodedMessage.append(hoffmanBinaryCodes.keySet().stream()
-                        .filter(x -> hoffmanBinaryCodes.get(x).equals(buffer.toString())).findFirst().orElse('^'));
+            if (shannonFanoBinaryCodes.containsValue(buffer.toString())) {
+                decodedMessage.append(shannonFanoBinaryCodes.keySet().stream()
+                        .filter(x -> shannonFanoBinaryCodes.get(x).equals(buffer.toString())).findFirst().orElse('^'));
                 buffer.delete(0, buffer.length());
             }
         }
