@@ -16,7 +16,7 @@ Small java crypto library
 ## Compress (compress package)
 - ArithmeticEncoding
 - ArithmeticEncodingDecimal
-- HoffmanCode
+- ShannonFanoCode
 - LempelZivCompress
 
 ## Util (util package)
