@@ -284,7 +284,7 @@ public class Blueprint {
         List<Integer> bytesWithMistakes = new ArrayList<>();
 
         for (int i = 0; i < numberOfMistakes; i++) {
-            int randomPosition = Math.abs(random.nextInt()) % receivedEncodedMessage.length;
+            int randomPosition = Math.abs(random.nextInt()) % numberOfInformationBytes;
             if (!bytesWithMistakes.contains(randomPosition)) {
                 if (receivedEncodedMessage[randomPosition] == 0) {
                     receivedEncodedMessage[randomPosition] = 1;

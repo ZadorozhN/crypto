@@ -120,7 +120,9 @@ public class CycleCode {
             }
         }
 
-        System.arraycopy(syndrome, 0, recoveryBytes, numberOfInformationBytes, syndrome.length);
+        if(Arrays.stream(syndrome).filter(i -> i == 1).count() == 1) {
+            System.arraycopy(syndrome, 0, recoveryBytes, numberOfInformationBytes, syndrome.length);
+        }
 
         return recoveryBytes;
     }

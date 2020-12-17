@@ -66,11 +66,16 @@ public final class EntropyUtil {
      */
     public double calculateEffectiveEntropyForBinaryAlphabet(double mistakeChance) {
         double lossOfInformation = 0;
+        double entropyOfBinaryAlphabet = 1;
 
         if (mistakeChance != 0 && mistakeChance != 1) {
             lossOfInformation = -mistakeChance * Math.log(mistakeChance) / Math.log(2)
-                    - (1 - mistakeChance) * Math.log(1 - mistakeChance) / Math.log(2);
+                    - (entropyOfBinaryAlphabet - mistakeChance)
+                    * Math.log(entropyOfBinaryAlphabet - mistakeChance) / Math.log(2);
         }
+
+        printUtil.println("H(X) is " + entropyOfBinaryAlphabet);
+        printUtil.println("H(X|Y) is " + lossOfInformation);
 
         return 1 - lossOfInformation;
     }
